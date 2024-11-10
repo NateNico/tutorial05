@@ -18,6 +18,7 @@ init();
 
 // The init function should reset the stage and set a new RGB color
 function init() {
+    reset();
 }
 
 resetButton.onclick = reset;
@@ -31,8 +32,24 @@ resetButton.onclick = reset;
 // If the color you clicked on was incorrect, you should set the color of the circle you just clicked to be the default color
 // and change the result text to be "Try again"
 function clickCircle(e) {
-
+    var clickedColor = e.target.style.backgroundColor;
+    if (clickedColor === pickedColor) {
+        resultMessage.textContent = "You win!";
+        resetButton.textContent = "Play again";
+        setAllCirclesColor(pickedColor);
+        banner.style.backgroundColor = pickedColor;
+    } else {
+        e.target.style.backgroundColor = defaultColour;
+        resultMessage.textContent = "Try again";
+    }
 }
+
+function setAllCirclesColor(color) {
+    for (let i = 0; i < circles.length; i++) {
+        circles[i].style.backgroundColor = color;
+    }
+}
+
 
 // The reset function should set new values for the colours array by calling genRandomColours.
 // pick a color from these and set it as the color you are trying to pick. This color
@@ -46,6 +63,7 @@ function reset() {
     colours = genRandomColours(); 
     pickedColor = chooseColor();
     colourToGuess.textContent = pickedColor;
+
     for (let i = 0; i < circles.length; i++) {
         circles[i].style.backgroundColor = colours[i];
         circles[i].addEventListener("click", clickCircle);
@@ -70,11 +88,13 @@ function makeColour() {
 // Write a function that will set new values for the colours array.
 // It should contain as many RGB color strings as there are circles
 function genRandomColours() {
-    var colours = []; // 6 colours
+
+    var colours = [];
     for (let i = 0; i < numCircles; i++) {
-        colours.push(makeColour()) // push random RGB colours to colours array
+        colours.push(makeColour());
     }
     return colours;
+
 }
 
 // return one of the 6 RGB colours you created and stored in colours
